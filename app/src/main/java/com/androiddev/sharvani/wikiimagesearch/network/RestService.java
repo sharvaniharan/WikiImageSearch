@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.androiddev.sharvani.wikiimagesearch.R;
 import com.androiddev.sharvani.wikiimagesearch.models.PageDetail;
+import com.androiddev.sharvani.wikiimagesearch.utils.NetworkUtils;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Bean;
@@ -25,9 +26,9 @@ import retrofit2.Response;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class RestService {
-    private RetroFitAPI retroFitAPI;
     @Bean
     public RestAdapter restAdapter;
+    private RetroFitAPI retroFitAPI;
 
     @AfterInject
     protected void init() {
@@ -40,52 +41,62 @@ public class RestService {
 
         final ArrayList<PageDetail> resultList = new ArrayList<>(50);
 
+        if (NetworkUtils.hasConnection(context)) {
+            Call<WikiResponse> call = retroFitAPI.getImages(piProp, thumbNailSize, numOfImagesRequested, generator, searchText, numOfImagesRequested);
+            call.enqueue(new Callback<WikiResponse>() {
+                @Override
+                public void onResponse(Call<WikiResponse> call,
+                                       Response<WikiResponse> response) {
+                    WikiResponse wikiResponse = response.body();
 
-        Call<WikiResponse> call = retroFitAPI.getImages(piProp, thumbNailSize, numOfImagesRequested, generator, searchText, numOfImagesRequested);
-        call.enqueue(new Callback<WikiResponse>() {
-            @Override
-            public void onResponse(Call<WikiResponse> call,
-                                   Response<WikiResponse> response) {
-                WikiResponse wikiResponse = response.body();
+                    if (wikiResponse != null && wikiResponse.getQuery() != null && wikiResponse.getQuery().getPages() != null) {
+                        Map<String, PageDetail> pages;
+                        pages = wikiResponse.getQuery().getPages();
+                        for (Map.Entry<String, PageDetail> entry : pages.entrySet()) {
+                            PageDetail pageDetail = entry.getValue();
+                            resultList.add(pageDetail);
+                        }
+                        listener.getPages(resultList);
 
-                if (wikiResponse != null && wikiResponse.getQuery() != null && wikiResponse.getQuery().getPages() != null) {
-                    Map<String, PageDetail> pages;
-                    pages = wikiResponse.getQuery().getPages();
-                    for (Map.Entry<String, PageDetail> entry : pages.entrySet()) {
-                        PageDetail pageDetail = entry.getValue();
-                        resultList.add(pageDetail);
+                    } else {
+                        listener.getPages(null);
                     }
-                    listener.getPages(resultList);
-
-                } else {
-                    listener.getPages(null);
                 }
-            }
 
-            @Override
-            public void onFailure(Call<WikiResponse> call, Throwable t) {
-                Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<WikiResponse> call, Throwable t) {
+                    Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void getInfoFor(final Context context, final String searchString, final Bitmap resultImage, final ResultUpdateListener listener) {
-        Call<Object[]> call = retroFitAPI.getInfo(searchString);
-        call.enqueue(new Callback<Object[]>() {
-            @Override
-            public void onResponse(@NonNull Call<Object[]> call,
-                                   @NonNull Response<Object[]> response) {
-                Object[] arrayOfArray = response.body();
-                ArrayList<String> descriptionsList = (ArrayList<String>) arrayOfArray[2];
-                ArrayList<String> websitesList = (ArrayList<String>) arrayOfArray[3];
-                listener.getNutShellDesc(descriptionsList.get(0), searchString, resultImage, websitesList.get(0));
+        if (NetworkUtils.hasConnection(context)) {
+            if (NetworkUtils.getConnectivityType(context) == NetworkUtils.Type.MOBILE) {
+                Toast.makeText(context, context.getString(R.string.not_wifi), Toast.LENGTH_LONG).show();
             }
+            Call<Object[]> call = retroFitAPI.getInfo(searchString);
+            call.enqueue(new Callback<Object[]>() {
+                @Override
+                public void onResponse(@NonNull Call<Object[]> call,
+                                       @NonNull Response<Object[]> response) {
+                    Object[] arrayOfArray = response.body();
+                    ArrayList<String> descriptionsList = (ArrayList<String>) arrayOfArray[2];
+                    ArrayList<String> websitesList = (ArrayList<String>) arrayOfArray[3];
+                    listener.getNutShellDesc(descriptionsList.get(0), searchString, resultImage, websitesList.get(0));
+                }
 
-            @Override
-            public void onFailure(@NonNull Call<Object[]> call, @NonNull Throwable t) {
-                Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<Object[]> call, @NonNull Throwable t) {
+                    Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_LONG).show();
+        }
     }
 }
 

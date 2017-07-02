@@ -20,4 +20,6 @@
     <string name="read_more"><u>Read More</u></string>
     <string name="no_data_text">Search Here For Images of Your Interest !</string>
     <string name="message_id">MessageId</string>
+    <string name="no_network">No Network Connection. Please connect to a network and try again.</string>
+    <string name="not_wifi">Not connected to wifi. This app uses your data plan to downloa Please switch to Wifi to avoid data usage.</string>
 </resources>

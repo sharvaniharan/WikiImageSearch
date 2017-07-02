@@ -29,7 +29,7 @@ public class WikiSearchViewHolder extends RecyclerView.ViewHolder implements Res
 
     public WikiSearchViewHolder(final View itemView) {
         super(itemView);
-        image= (ImageView) itemView.findViewById(R.id.image);
+        image = (ImageView) itemView.findViewById(R.id.image);
         title = (TextView) itemView.findViewById(R.id.image_title);
         image.setDrawingCacheEnabled(true);
         context = image.getContext();

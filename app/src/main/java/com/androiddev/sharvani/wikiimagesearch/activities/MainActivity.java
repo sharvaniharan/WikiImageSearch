@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements TextListener, Res
     @Override
     public void getCurrentText(String currentText) {
         if (tracker >= optimizer) {
-            restService.initiateRetrofitCallTogetImages(this,this, currentText, 50, 120);
+            restService.initiateRetrofitCallTogetImages(this, this, currentText, 50, 120);
             tracker = 0;
         } else {
             tracker++;

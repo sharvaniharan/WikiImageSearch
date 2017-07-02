@@ -31,7 +31,7 @@ public class WikiSearchAdapter extends RecyclerView.Adapter<WikiSearchViewHolder
     public void onBindViewHolder(final WikiSearchViewHolder holder, int position) {
         final PageDetail pageDetail = pageDetails.get(position);
         final String title = pageDetail.getTitle() == null ? "" : pageDetail.getTitle();
-        if (pageDetail != null || pageDetail.getThumbnail() != null) {
+        if (pageDetail != null && pageDetail.getThumbnail() != null) {
             holder.bind(pageDetail.getThumbnail().getSourceUrl(), title);
         }
     }
