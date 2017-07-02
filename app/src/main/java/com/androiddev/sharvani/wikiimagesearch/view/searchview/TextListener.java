@@ -1,4 +1,4 @@
-package com.androiddev.sharvani.wikiimagesearch.views.search_edittext;
+package com.androiddev.sharvani.wikiimagesearch.view.searchview;
 
 /**
  * Created by Sharvani on 6/30/17.
@@ -6,4 +6,6 @@ package com.androiddev.sharvani.wikiimagesearch.views.search_edittext;
 
 public interface TextListener {
     public void getCurrentText(String currentText);
+
+    public void onreturnKey();
 }
