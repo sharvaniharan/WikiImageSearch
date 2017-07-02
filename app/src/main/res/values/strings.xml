@@ -1,3 +1,25 @@
 <resources>
-    <string name="app_name">Wiki Image Search</string>
+    <string name="app_name">Search Genius</string>
+    <string name="search_edit_text_hint">Wiki Image Search\t\t\t\t\t\t\t</string>
+    <string name="pi_prop">thumbnail</string>
+    <string name="generator">prefixsearch</string>
+    <string name="gpssearch">India</string>
+    <string name="wiki_media">Wiki Media</string>
+    <string name="default_text">No Snippet Available At This Point. Please Check Back Later.</string>
+    <string name="optimize_search">Optimize Search</string>
+    <string name="about">About</string>
+    <string name="optimize_message">Optimize Search by opting to get images after you type \'n\' characters</string>
+    <string name="your_n">Your \'n\'</string>
+    <string name="ok">OK</string>
+    <string name="about_search_genius">About Search Genius</string>
+    <string name="about_text">Search Genius is designed to bring the best search results for your image search.
+        Powered by WikiPedia\'s image services, it has images for about any topic that you can think of.
+        Make sure to you try the dynamic search which searches as you type,
+        and the search optimizer which makes things better!
+    It has little snippets for you to enjoy as you click on each image ! Happy searching!</string>
+    <string name="read_more"><u>Read More</u></string>
+    <string name="no_data_text">Search Here For Images of Your Interest !</string>
+    <string name="message_id">MessageId</string>
+    <string name="no_network">No Network Connection. Please connect to a network and try again.</string>
+    <string name="not_wifi">Not connected to wifi. This app uses your data plan to downloa Please switch to Wifi to avoid data usage.</string>
 </resources>
