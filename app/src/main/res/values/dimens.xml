@@ -11,4 +11,5 @@
     <dimen name="padding_big">15dp</dimen>
     <dimen name="xsmall_height_divider">2dp</dimen>
     <dimen name="text_big">18sp</dimen>
+    <dimen name="paddins_small">5dp</dimen>
 </resources>

@@ -21,6 +21,10 @@ import java.util.ArrayList;
 public class WikiSearchAdapter extends RecyclerView.Adapter<WikiSearchViewHolder> {
     private ArrayList<PageDetail> pageDetails = new ArrayList<>();
 
+    public WikiSearchAdapter() {
+        setHasStableIds(true);
+    }
+
     @Override
     public WikiSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row_results_recyclerview, parent, false);
@@ -31,7 +35,7 @@ public class WikiSearchAdapter extends RecyclerView.Adapter<WikiSearchViewHolder
     public void onBindViewHolder(final WikiSearchViewHolder holder, int position) {
         final PageDetail pageDetail = pageDetails.get(position);
         final String title = pageDetail.getTitle() == null ? "" : pageDetail.getTitle();
-        if (pageDetail != null && pageDetail.getThumbnail() != null) {
+        if (pageDetail.getThumbnail() != null) {
             holder.bind(pageDetail.getThumbnail().getSourceUrl(), title);
         }
     }
@@ -44,7 +48,6 @@ public class WikiSearchAdapter extends RecyclerView.Adapter<WikiSearchViewHolder
     public void initializeData(ArrayList<PageDetail> pageDetails) {
         this.pageDetails.clear();
         this.pageDetails.addAll(pageDetails);
-        notifyDataSetChanged();
     }
 
     public void reset() {
@@ -52,5 +55,14 @@ public class WikiSearchAdapter extends RecyclerView.Adapter<WikiSearchViewHolder
         notifyDataSetChanged();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
 }

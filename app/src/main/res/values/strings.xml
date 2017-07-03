@@ -22,4 +22,6 @@
     <string name="message_id">MessageId</string>
     <string name="no_network">No Network Connection. Please connect to a network and try again.</string>
     <string name="not_wifi">Not connected to wifi. This app uses your data plan to downloa Please switch to Wifi to avoid data usage.</string>
+    <string name="wiki_url">https://www.wikimedia.org/</string>
+    <string name="wiki_desc">Wikimedia is a global movement whose mission is to bring free educational content to the world.</string>
 </resources>

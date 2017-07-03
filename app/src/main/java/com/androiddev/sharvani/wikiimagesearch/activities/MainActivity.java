@@ -1,9 +1,12 @@
 package com.androiddev.sharvani.wikiimagesearch.activities;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -80,7 +83,9 @@ public class MainActivity extends AppCompatActivity implements TextListener, Res
     @Override
     public void getCurrentText(String currentText) {
         if (tracker >= optimizer) {
-            restService.initiateRetrofitCallTogetImages(this, this, currentText, 50, 120);
+            Resources r = getResources();
+            float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, r.getDisplayMetrics());
+            restService.initiateRetrofitCallTogetImages(this, this, currentText, 50, (int) px);
             tracker = 0;
         } else {
             tracker++;
@@ -105,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements TextListener, Res
             emptyView.setVisibility(View.GONE);
             suggestionImageView.setVisibility(View.GONE);
             searchResultRecyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -138,6 +144,8 @@ public class MainActivity extends AppCompatActivity implements TextListener, Res
 
 
     public void updatePreference(String s) {
-        optimizer = Integer.valueOf(s);
+        if (!TextUtils.isEmpty(s)) {
+            optimizer = Integer.valueOf(s);
+        }
     }
 }

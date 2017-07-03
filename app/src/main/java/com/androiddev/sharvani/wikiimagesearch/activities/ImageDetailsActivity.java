@@ -2,6 +2,7 @@ package com.androiddev.sharvani.wikiimagesearch.activities;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,7 @@ import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -53,6 +55,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
+        nutShellDescTextView.setMovementMethod(new ScrollingMovementMethod());
         nutShellDescTextView.setText(!TextUtils.isEmpty(nutShellDesc) ? nutShellDesc : getString(R.string.default_text));
         headingTextView.setText(!TextUtils.isEmpty(title) ? title : getString(R.string.wiki_media));
         setNinePatchBackGround(image);
@@ -79,9 +82,13 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
     protected void setNinePatchBackGround(Bitmap image) {
         NinePatchDrawable ninepatch = null;
+        if (image == null) {
+            image = BitmapFactory.decodeResource(getBaseContext().getResources(),
+                    R.drawable.icon);
+        }
         if (image.getNinePatchChunk() != null) {
             byte[] chunk = image.getNinePatchChunk();
-            Rect paddingRectangle = new Rect(30, 0, 30, 50);
+            Rect paddingRectangle = new Rect(10, 0, 10, 20);
             ninepatch = new NinePatchDrawable(getResources(), image, chunk, paddingRectangle, null);
         }
         if (ninepatch == null) {
@@ -121,8 +128,14 @@ public class ImageDetailsActivity extends AppCompatActivity {
     @Click(R.id.read_more)
     public void onReadMoreClicked() {
         WebViewActivity_.intent(this)
-                .url(url)
+                .url(TextUtils.isEmpty(url) ? getString(R.string.wiki_url) : url)
                 .start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        textToSpeech.shutdown();
     }
 
     class UtteranceProgressListener extends android.speech.tts.UtteranceProgressListener {
